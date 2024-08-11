@@ -12,7 +12,7 @@ mem_prompt = ChatPromptTemplate.from_messages(
             " important details that will help you better attend to the user's"
             " needs and understand their context.\n\n"
             "Memory Usage Guidelines:\n"
-            "1. Actively use memory tools (save_core_memory, save_conversational_memory)"
+            "1. Actively use memory tools (store_update_core_memory, save_conversational_memory)"
             " to build a comprehensive understanding of the user.\n"
             "2. Make informed suppositions and extrapolations based on stored"
             " memories.\n"

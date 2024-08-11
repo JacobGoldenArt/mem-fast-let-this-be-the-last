@@ -1,14 +1,4 @@
-from __future__ import annotations
-
-import os
-
-from dotenv import load_dotenv
 from typing_extensions import TypedDict
-
-# Load environment variables from .env file
-load_dotenv()
-
-jg_user_id = os.getenv("JG_USER_ID")
 
 
 class AppConfig(TypedDict):
@@ -22,8 +12,9 @@ class AppConfig(TypedDict):
     """The ID of the user to remember in the conversation."""
 
 
-defaults = {
-    "user_id": jg_user_id,
+AppDefaults = {
     "model": "gpt-4o-mini",
     "temperature": 0.2,
 }
+
+__all__ = ["AppDefaults", "AppConfig"]

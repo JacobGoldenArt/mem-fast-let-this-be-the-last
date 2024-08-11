@@ -1,4 +1,3 @@
-appmap>=1.1.0.dev0
 langgraph
 langsmith
 langchain-fireworks
@@ -18,3 +17,6 @@ fastapi
 uvicorn
 aiohttp
 rich
+PyGithub
+tqdm
+pytest

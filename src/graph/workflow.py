@@ -10,8 +10,8 @@ from src.tools.toolkit import toolkit
 workflow = StateGraph(AppState, AppConfig)
 
 # add nodes to the graph
-workflow.add_node("load_memories", load_memories)
-workflow.add_node("main_agent", main_agent)
+workflow.add_node(load_memories)
+workflow.add_node(main_agent)
 workflow.add_node("tools", ToolNode(toolkit))
 
 # add edges to the graph
@@ -20,4 +20,7 @@ workflow.add_edge("load_memories", "main_agent")
 workflow.add_conditional_edges("main_agent", tools_condition)
 workflow.add_edge("tools", "main_agent")
 
-__all__ = "workflow"
+# compile the graph
+memgraph = workflow.compile()
+
+__all__ = ["memgraph"]
