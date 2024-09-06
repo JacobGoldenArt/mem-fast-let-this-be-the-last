@@ -1,12 +1,17 @@
 from datetime import datetime, timezone
 
-from langchain.chat_models import init_chat_model
+import pytz  # Importing pytz for timezone handling
 from langchain_core.runnables.config import RunnableConfig
 
 from src.graph.state import AppState
+from src.llms.model import _get_model
 from src.prompts.mem_prompt import mem_prompt
 from src.settings.config import config_manager
 from src.tools.toolkit import toolkit
+
+
+def get_time() -> datetime:
+    return datetime.now(timezone.utc).astimezone(pytz.timezone("America/Los_Angeles"))
 
 
 async def main_agent(state: AppState, config: RunnableConfig) -> AppState:
@@ -20,10 +25,14 @@ async def main_agent(state: AppState, config: RunnableConfig) -> AppState:
     Returns:
     AppState: The updated state after processing the agent's behavior.
 """
-    app_config = config_manager.process_config(config)
-    llm = init_chat_model(app_config["model"])
+    configure = config_manager.process_config(config)
+    llm_main = configure['em_model']
+    temperature = configure['temperature']
 
-    bound = mem_prompt | llm.bind_tools(toolkit)
+    model = _get_model(config, llm_main, 'em_model').bind_tools(toolkit)
+
+    bound = mem_prompt | model
+
     core_str = (
             "<core_memory>\n" + "\n".join(state["core_memories"]) + "\n</core_memory>"
     )
@@ -34,7 +43,7 @@ async def main_agent(state: AppState, config: RunnableConfig) -> AppState:
         "messages": state["messages"],
         "core_memories": core_str,
         "conversational_memories": conversational_str,
-        "current_time": datetime.now(tz=timezone.utc).isoformat(),
+        "current_time": get_time(),
     })
     return {
         "messages": prediction,

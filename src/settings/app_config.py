@@ -1,20 +1,30 @@
-from typing_extensions import TypedDict
+from typing import TypedDict, Literal, Optional
 
 
 class AppConfig(TypedDict):
-    model: str | None
-    """The model to use for the memory assistant."""
-    temperature: float
+    """LLM for EMs main conversation."""
+    em_model: Literal[
+        'oai-gpt4',
+        'oai-gpt4m',
+        'an-35-s',
+        'mis-nemo',
+        'mis-lg',
+        'fw-lm31-405b',
+        'fw-lm31-150b',
+        'fw-lm31-8b',
+    ]
     """The temperature to use for the memory assistant."""
-    thread_id: str
+    temperature: Optional[float]
+    """The temperature to use for the task related conversation."""
+    # thread_id: str
     """The thread ID of the conversation."""
-    user_id: str
+    # user_id: str
     """The ID of the user to remember in the conversation."""
 
 
 AppDefaults = {
-    "model": "gpt-4o-mini",
-    "temperature": 0.2,
+    "em_model": "oai-gpt4m",
+    "temperature": 0.3,
 }
 
-__all__ = ["AppDefaults", "AppConfig"]
+__all__ = ["AppConfig", "AppDefaults"]
